@@ -24,7 +24,6 @@ def get_page_content(cur_url, index, depth):
     print( "downloading %s at level %d" % (cur_url, depth))
     try:
         http = urllib3.PoolManager()
-
         r = http.request('GET', cur_url, headers=request_headers)
         html_page = r.data
         filename = cur_url[7:].replace('/', '_')
@@ -117,6 +116,3 @@ while True:
                 break
             except Exception:
                 print( "Error: unable to start thread")
-
-cursor.close()
-cnx.close()
