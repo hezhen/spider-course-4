@@ -15,7 +15,7 @@ class CrawlDatabaseManager:
         "CREATE TABLE `urls` ("
         "  `index` int(11) NOT NULL AUTO_INCREMENT," # index of queue
         "  `url` varchar(512) NOT NULL,"
-        "  `md5` varchar(16) NOT NULL,"
+        "  `md5` varchar(32) NOT NULL,"
         "  `status` varchar(11) NOT NULL DEFAULT 'new'," # could be new, downloading and finish
         "  `depth` int(11) NOT NULL,"
         "  `queue_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,"
@@ -104,7 +104,7 @@ class CrawlDatabaseManager:
             # commit this transaction, please refer to "mysql transaction" for more info
             con.commit()
         except mysql.connector.Error as err:
-            # print( 'enqueueUrl() ' + err.msg)
+            print( 'enqueueUrl() ' + err.msg)
             return
         finally:
             cursor.close()
@@ -129,7 +129,7 @@ class CrawlDatabaseManager:
             con.commit()
             return row
         except mysql.connector.Error as err:
-            # print( 'dequeueUrl() ' + err.msg)
+            print( 'dequeueUrl() ' + err.msg)
             return None
         finally:
             cursor.close()
@@ -146,7 +146,7 @@ class CrawlDatabaseManager:
             cursor.execute(update_query)
             con.commit()
         except mysql.connector.Error as err:
-            # print( 'finishUrl() ' + err.msg)
+            print( 'finishUrl() ' + err.msg)
             return
         finally:
             cursor.close()

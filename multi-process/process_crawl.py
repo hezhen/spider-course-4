@@ -86,8 +86,10 @@ CRAWL_DELAY = 0.6
 
 while True:
     curtask = dbmanager.dequeueUrl()
+    print ("dequeue")
     # Go on next level, before that, needs to wait all current level crawling done
     if curtask is None:
+        print ("no task")
         for t in threads:
             t.join()
         break
