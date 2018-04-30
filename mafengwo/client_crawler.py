@@ -17,59 +17,50 @@ import json
 
 import argparse
 
-parser = argparse.ArgumentParser(prog='CrawlerClient', description='Start a crawler client')
-parser.add_argument('-S', '--host-all', type=str, nargs=1, help='Host server for all services')
-parser.add_argument('-s', '--host', type=str, nargs=1, help='Crawler host server address, default is localhost')
-parser.add_argument('-p', '--host-port', type=int, nargs=1, help='Crawler host server port number, default is 20100')
-parser.add_argument('-m', '--mongo', type=str, nargs=1, help='Mongo Server address, default is localhost')
-parser.add_argument('-n', '--mongo-port', type=int, nargs=1, help='Mongo port number, default is 27017')
-parser.add_argument('-r', '--redis', type=str, nargs=1, help='Redis server address, default is localhost')
-parser.add_argument('-x', '--redis-port', type=int, nargs=1, help='Redis port number, default is 6379')
-
 class arguments:
     pass
 
-args = arguments()
+def parse_app_arguments():
+    parser = argparse.ArgumentParser(prog='CrawlerClient', description='Start a crawler client')
+    parser.add_argument('-S', '--host-all', type=str, nargs=1, help='Host server for all services')
+    parser.add_argument('-s', '--host', type=str, nargs=1, help='Crawler host server address, default is localhost')
+    parser.add_argument('-p', '--host-port', type=int, nargs=1, help='Crawler host server port number, default is 20100')
+    parser.add_argument('-m', '--mongo', type=str, nargs=1, help='Mongo Server address, default is localhost')
+    parser.add_argument('-n', '--mongo-port', type=int, nargs=1, help='Mongo port number, default is 27017')
+    parser.add_argument('-r', '--redis', type=str, nargs=1, help='Redis server address, default is localhost')
+    parser.add_argument('-x', '--redis-port', type=int, nargs=1, help='Redis port number, default is 6379')
 
-parser.parse_args(namespace=args)
+    args = arguments()
 
-if args.host_all is not None:
-    args.host = args.mongo = args.redis = args.host_all
+    parser.parse_args(namespace=args)
 
-if args.host is None:
-    args.host = 'localhost'
+    if args.host_all is not None:
+        args.host = args.mongo = args.redis = args.host_all
 
-if args.mongo is None:
-    args.mongo = 'localhost'
+    if args.host is None:
+        args.host = 'localhost'
 
-if args.redis is None:
-    args.redis = 'localhost'
+    if args.mongo is None:
+        args.mongo = 'localhost'
 
-if args.host_port is None:
-    args.host_port = 9999
+    if args.redis is None:
+        args.redis = 'localhost'
 
-if args.mongo_port is None:
-    args.mongo_port = 27017
+    if args.host_port is None:
+        args.host_port = 9999
 
-if args.redis_port is None:
-    args.redis_port = 6379 
+    if args.mongo_port is None:
+        args.mongo_port = 27017
 
-request_headers = {
-    'host': "www.mafengwo.cn",
-    'connection': "keep-alive",
-    'cache-control': "no-cache",
-    'upgrade-insecure-requests': "1",
-    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36",
-    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-    'accept-language': "zh-CN,en-US;q=0.8,en;q=0.6"
-}
+    if args.redis_port is None:
+        args.redis_port = 6379 
 
-dir_name = 'mfw/'
+parse_app_arguments()
 
-if os.path.exists(dir_name) is False:
-    os.mkdir(dir_name)
 
 def get_page_content(cur_url, depth):
+    global dir_name, dbmanager
+
     print( "downloading %s at level %d" % (cur_url, depth))
     links = []
     try:
@@ -113,7 +104,7 @@ def get_page_content(cur_url, depth):
     dbmanager.set_url_links(cur_url, links)
 
 def heartbeat():
-    global server_status, run_heartbeat, client_id
+    global server_status, run_heartbeat, client_id, hb_period
     skip_wait = False
     while run_heartbeat:
         if skip_wait is False:
@@ -170,89 +161,118 @@ def heartbeat():
             server_status = pc.STATUS_CONNECTION_LOST
             raise
 
-# thread pool size
-max_num_thread = 5
+def start_heart_beat_thread():
+    try:
+        t = threading.Thread(target=heartbeat, name=None)
+        # set daemon so main thread can exit when receives ctrl-c
+        t.setDaemon(True)
+        t.start()
+    except Exception as err:
+        print( "Error: unable to start thread", err)
+        raise
+
+def crawl():
+    # thread pool size
+    max_num_thread = 5
+    CRAWL_DELAY = 2
+    global dbmanager, is_root_page, threads, hb_period = 
+
+    while True:
+        if server_status == pc.STATUS_PAUSED:
+            time.sleep(hb_period)
+            continue
+        if server_status == pc.SHUTDOWN:
+            run_heartbeat = False
+            for t in threads:
+                t.join()
+            break
+        curtask = dbmanager.dequeueUrl()
+        
+        # Go on next level, before that, needs to wait all current level crawling done
+        if curtask is None:
+            time.sleep(hb_period)
+            continue
+        else:
+            print( 'current task is: ', curtask['url'], "at depth: ", curtask['depth'])
+
+        # looking for an empty thread from pool to crawl
+
+        if is_root_page is True:
+            get_page_content(curtask['url'], curtask['depth'])
+            is_root_page = False
+        else:
+            while True:    
+                # first remove all finished running threads
+                for t in threads:
+                    if not t.is_alive():
+                        threads.remove(t)
+                if len(threads) >= max_num_thread:
+                    time.sleep(CRAWL_DELAY)
+                    continue
+                try:
+                    t = threading.Thread(target=get_page_content, name=None, args=(curtask['url'], curtask['depth']))
+                    threads.append(t)
+                    # set daemon so main thread can exit when receives ctrl-c
+                    t.setDaemon(True)
+                    t.start()
+                    time.sleep(CRAWL_DELAY)
+                    break
+                except Exception as err:
+                    print( "Error: unable to start thread", err)
+                    raise
+def finish():
+    global client_id
+    shutdown_request = {}
+    shutdown_request[pc.MSG_TYPE] = pc.SHUTDOWN
+    shutdown_request[pc.CLIENT_ID] = client_id
+    socket_client.send(json.dumps(shutdown_request))
+
+
+def init():
+    global client_id
+
+    if os.path.exists(dir_name) is False:
+        os.mkdir(dir_name)
+    dbmanager.clear()
+    dbmanager.enqueueUrl('http://www.mafengwo.cn', 'new', 0 )
+
+    register_request = {}
+    register_request[pc.MSG_TYPE] = pc.REGISTER
+    client_id = socket_client.send(json.dumps(register_request))
+
+
+# initialize global variables
+request_headers = {
+    'host': "www.mafengwo.cn",
+    'connection': "keep-alive",
+    'cache-control': "no-cache",
+    'upgrade-insecure-requests': "1",
+    'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36",
+    'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    'accept-language': "zh-CN,en-US;q=0.8,en;q=0.6"
+}
+
+
+# Initialize system variables
+dir_name = 'mfw/'
 
 # db manager
 dbmanager = MongoRedisUrlManager()
-dbmanager.clear()
 
-dbmanager.enqueueUrl('http://www.mafengwo.cn', 'new', 0 )
-
-start_time = time.time()
 is_root_page = True
 threads = []
-
-CRAWL_DELAY = 1
 
 # use hdfs to save pages
 # hdfs_client = InsecureClient('http://54.223.92.169:50070', user='ec2-user')
 
 socket_client = SocketClient('localhost', 20010)
-
-register_request = {}
-register_request[pc.MSG_TYPE] = pc.REGISTER
-client_id = socket_client.send(json.dumps(register_request))
+client_id = 0
 
 hb_period = 5
 run_heartbeat = True
 server_status = pc.STATUS_RUNNING
 
-try:
-
-    t = threading.Thread(target=heartbeat, name=None)
-    # set daemon so main thread can exit when receives ctrl-c
-    t.setDaemon(True)
-    t.start()
-except Exception as err:
-    print( "Error: unable to start thread", err)
-    raise
-
-while True:
-    if server_status == pc.STATUS_PAUSED:
-        time.sleep(hb_period)
-        continue
-    if server_status == pc.SHUTDOWN:
-        run_heartbeat = False
-        for t in threads:
-            t.join()
-        break
-    curtask = dbmanager.dequeueUrl()
-    
-    # Go on next level, before that, needs to wait all current level crawling done
-    if curtask is None:
-        time.sleep(hb_period)
-        continue
-    else:
-        print( 'current task is: ', curtask['url'], "at depth: ", curtask['depth'])
-
-    # looking for an empty thread from pool to crawl
-
-    if is_root_page is True:
-        get_page_content(curtask['url'], curtask['depth'])
-        is_root_page = False
-    else:
-        while True:    
-            # first remove all finished running threads
-            for t in threads:
-                if not t.is_alive():
-                    threads.remove(t)
-            if len(threads) >= max_num_thread:
-                time.sleep(CRAWL_DELAY)
-                continue
-            try:
-                t = threading.Thread(target=get_page_content, name=None, args=(curtask['url'], curtask['depth']))
-                threads.append(t)
-                # set daemon so main thread can exit when receives ctrl-c
-                t.setDaemon(True)
-                t.start()
-                time.sleep(CRAWL_DELAY)
-                break
-            except Exception as err:
-                print( "Error: unable to start thread", err)
-                raise
-
-shutdown_request = {}
-shutdown_request[pc.MSG_TYPE] = pc.SHUTDOWN
-shutdown_request[pc.CLIENT_ID] = client_id
-socket_client.send(json.dumps(shutdown_request))
+init()
+start_heart_beat_thread()
+crawl()
+finish()
