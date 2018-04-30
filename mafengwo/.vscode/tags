@@ -1,0 +1,184 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+ACTION_REQUIRED	../protocol_constants.py	/^ACTION_REQUIRED	= 'ACTION_REQUIRED'$/;"	kind:variable	line:39
+ASCENDING	../mongo_mgr.py	/^from pymongo import IndexModel, ASCENDING, DESCENDING$/;"	kind:namespace	line:10
+CLIENT_ID	../protocol_constants.py	/^CLIENT_ID 	= 'CLIENT_ID'$/;"	kind:variable	line:36
+CRAWL_DELAY	../client_crawler.py	/^CRAWL_DELAY = 1$/;"	kind:variable	line:197
+CRAWL_DELAY	../location_spider.py	/^CRAWL_DELAY = 0.1$/;"	kind:variable	line:66
+CRAWL_DELAY	../protocol_constants.py	/^CRAWL_DELAY = 'CRAWL_DELAY'$/;"	kind:variable	line:30
+CrawlMaster	../master.py	/^class CrawlMaster:$/;"	kind:class	line:20
+DATA	../protocol_constants.py	/^DATA = 'DATA'$/;"	kind:variable	line:28
+DESCENDING	../mongo_mgr.py	/^from pymongo import IndexModel, ASCENDING, DESCENDING$/;"	kind:namespace	line:10
+ERROR	../protocol_constants.py	/^ERROR 	= 'ERROR'$/;"	kind:variable	line:62
+ERR_NOT_FOUND	../protocol_constants.py	/^ERR_NOT_FOUND	= 'ERR_NOT_FOUND'$/;"	kind:variable	line:65
+FININSHED_ITEMS	../protocol_constants.py	/^FININSHED_ITEMS = 'FINISHED_ITEMS'$/;"	kind:variable	line:33
+HEARTBEAT	../protocol_constants.py	/^HEARTBEAT	= 'HEARTBEAT'$/;"	kind:variable	line:11
+HdfsError	../client_crawler.py	/^from hdfs import HdfsError$/;"	kind:namespace	line:4
+HeartBeatClient	../heartbeat_client.py	/^class HeartBeatClient():$/;"	kind:class	line:10
+HeartBeatClient	../location_spider.py	/^from heartbeat_client import HeartBeatClient$/;"	kind:namespace	line:10
+IndexModel	../mongo_mgr.py	/^from pymongo import IndexModel, ASCENDING, DESCENDING$/;"	kind:namespace	line:10
+LOCATIONS	../protocol_constants.py	/^LOCATIONS		= 'REQUIRE_LOCATION_LIST'$/;"	kind:variable	line:23
+MSG_TYPE	../protocol_constants.py	/^MSG_TYPE	= 'TYPE'$/;"	kind:variable	line:2
+MongoClient	../mongo_mgr.py	/^from pymongo import MongoClient$/;"	kind:namespace	line:9
+MongoManager	../client_crawler.py	/^from mongo_mgr import MongoManager$/;"	kind:namespace	line:9
+MongoManager	../master.py	/^from mongo_mgr import MongoManager$/;"	kind:namespace	line:9
+MongoManager	../mongo_mgr.py	/^class MongoManager:$/;"	kind:class	line:13
+PAUSED	../protocol_constants.py	/^PAUSED 		= 'PAUSED'$/;"	kind:variable	line:14
+PAUSE_REQUIRED	../protocol_constants.py	/^PAUSE_REQUIRED	= 'PAUSE_REQUIRED'$/;"	kind:variable	line:42
+REGISTER	../protocol_constants.py	/^REGISTER 	= 'REGISTER'$/;"	kind:variable	line:5
+REQUEST_SIZE	../protocol_constants.py	/^REQUEST_SIZE    = 50/;"	kind:variable	line:67
+RESUMED	../protocol_constants.py	/^RESUMED		= 'RESUMED'$/;"	kind:variable	line:17
+RESUME_REQUIRED	../protocol_constants.py	/^RESUME_REQUIRED	= 'RESUME_REQUIRED'$/;"	kind:variable	line:45
+SERVER_STATUS	../protocol_constants.py	/^SERVER_STATUS	= 'SERVER_STATUS'$/;"	kind:variable	line:51
+SHUTDOWN	../protocol_constants.py	/^SHUTDOWN		= 'SHUTDOWN'$/;"	kind:variable	line:20
+SHUTDOWN_REQUIRED	../protocol_constants.py	/^SHUTDOWN_REQUIRED	= 'SHUTDOWN_REQUIRED'$/;"	kind:variable	line:48
+STATUS_CONNECTION_LOST	../protocol_constants.py	/^STATUS_CONNECTION_LOST	= 'STATUS_CONNECTION_LOST'$/;"	kind:variable	line:60
+STATUS_PAUSED	../protocol_constants.py	/^STATUS_PAUSED 	= 'STATUS_PAUSED'$/;"	kind:variable	line:56
+STATUS_RUNNING	../protocol_constants.py	/^STATUS_RUNNING	= 'STATUS_RUNNING'$/;"	kind:variable	line:54
+STATUS_SHUTDOWN	../protocol_constants.py	/^STATUS_SHUTDOWN	= 'STATUS_SHUTDOWN'$/;"	kind:variable	line:58
+ServerSocket	../master.py	/^from socket_server import ServerSocket$/;"	kind:namespace	line:3
+ServerSocket	../socket_server.py	/^class ServerSocket:$/;"	kind:class	line:7
+SocketClient	../client_crawler.py	/^from socket_client import SocketClient$/;"	kind:namespace	line:15
+SocketClient	../heartbeat_client.py	/^from socket_client import SocketClient$/;"	kind:namespace	line:4
+SocketClient	../socket_client.py	/^class SocketClient:$/;"	kind:class	line:4
+StringIO	../location_spider.py	/^from StringIO import StringIO$/;"	kind:namespace	line:12
+TRIPLES	../protocol_constants.py	/^TRIPLES  	= 'TRIPLES'$/;"	kind:variable	line:26
+UNREGISTER	../protocol_constants.py	/^UNREGISTER 	= 'UNREGISTER'$/;"	kind:variable	line:8
+__init__	../heartbeat_client.py	/^    def __init__(self):$/;"	kind:member	line:18
+__init__	../master.py	/^	def __init__(self, mongo_client = None, mongo_host='localhost'):$/;"	kind:member	line:29
+__init__	../mongo_mgr.py	/^    def __init__(self, server_ip='localhost', client=None, expires=timedelta(days=30)):$/;"	kind:member	line:15
+__init__	../socket_client.py	/^    def __init__(self, server_ip, server_port):$/;"	kind:member	line:5
+__init__	../socket_server.py	/^    def __init__(self, callback, host='localhost', port=20010):$/;"	kind:member	line:12
+__init__.py	../__init__.py	1;"	kind:file	line:1
+argparse	../client_crawler.py	/^import argparse$/;"	kind:namespace	line:10
+argparse	../client_crawler.py	/^import argparse$/;"	kind:namespace	line:19
+argparse	../heartbeat_client.py	/^import argparse$/;"	kind:namespace	line:8
+args	../client_crawler.py	/^args = arguments()$/;"	kind:variable	line:33
+arguments	../client_crawler.py	/^class arguments:$/;"	kind:class	line:30
+clear	../mongo_mgr.py	/^    def clear(self):$/;"	kind:member	line:62
+client_crawler.py	../client_crawler.py	1;"	kind:file	line:1
+client_id	../client_crawler.py	/^client_id = socket_client.send(json.dumps(register_request))$/;"	kind:variable	line:206
+client_id	../heartbeat_client.py	/^    client_id = -1$/;"	kind:variable	line:14
+clients	../master.py	/^	clients = {}$/;"	kind:variable	line:21
+clientthread	../socket_server.py	/^    def clientthread(self, conn):$/;"	kind:member	line:43
+close	../socket_server.py	/^    def close(self):$/;"	kind:member	line:63
+connect	../heartbeat_client.py	/^    def connect(self):$/;"	kind:member	line:21
+connector	../mongo_mgr.py	/^import mysql.connector$/;"	kind:namespace	line:1
+constants	../master.py	/^constants = {$/;"	kind:variable	line:15
+crawl_master	../master.py	/^crawl_master = CrawlMaster()$/;"	kind:variable	line:111
+curtask	../client_crawler.py	/^    curtask = dbmanager.dequeueUrl()$/;"	kind:variable	line:230
+datetime	../mongo_mgr.py	/^from datetime import datetime$/;"	kind:namespace	line:5
+dbmanager	../client_crawler.py	/^dbmanager = MongoRedisUrlManager()$/;"	kind:variable	line:189
+dequeueItems	../mongo_mgr.py	/^    def dequeueItems(self, size):$/;"	kind:member	line:31
+dir_name	../client_crawler.py	/^dir_name = 'mfw\/'$/;"	kind:variable	line:68
+disconnect	../heartbeat_client.py	/^    def disconnect(self):$/;"	kind:member	line:28
+domain	../location_spider.py	/^        domain = 'https:\/\/www.' + google_domains[domain_index] + '\/search?'$/;"	kind:variable	line:120
+domain_index	../location_spider.py	/^domain_index = 0$/;"	kind:variable	line:64
+domains.py	../domains.py	1;"	kind:file	line:1
+etree	../client_crawler.py	/^from lxml import etree$/;"	kind:namespace	line:5
+etree	../domains.py	/^from lxml import etree$/;"	kind:namespace	line:2
+exit_signal_handler	../master.py	/^def exit_signal_handler(signal, frame):$/;"	kind:function	line:107
+exit_signal_handler	../socket_server.py	/^def exit_signal_handler(signal, frame):$/;"	kind:function	line:70
+external_links	../domains.py	/^external_links = tree.xpath('\/\/td\/span\/a[@class="external text"]')$/;"	kind:variable	line:12
+f	../domains.py	/^f = open('List of Google domains - Wikipedia.htm', 'rb+')$/;"	kind:variable	line:4
+finishItems	../mongo_mgr.py	/^    def finishItems(self, ids):$/;"	kind:member	line:52
+finish_target_items	../heartbeat_client.py	/^    def finish_target_items(self, type, items):$/;"	kind:member	line:104
+get_constants	../socket_client.py	/^    def get_constants(self, prefix):$/;"	kind:member	line:18
+get_free_id	../master.py	/^	def get_free_id(self):$/;"	kind:member	line:82
+get_google_domain	../location_spider.py	/^def get_google_domain():$/;"	kind:function	line:71
+get_google_search_result	../location_spider.py	/^def get_google_search_result(key_word):$/;"	kind:function	line:77
+get_page_content	../client_crawler.py	/^def get_page_content(cur_url, index, depth):$/;"	kind:function	line:70
+get_target_items	../heartbeat_client.py	/^    def get_target_items(self, type):$/;"	kind:member	line:97
+google_domains	../location_spider.py	/^google_domains = ["google.com", "google.ac", "google.ad", "google.ae", "google.com.af", "google.com.ag",$/;"	kind:variable	line:14
+google_links	../domains.py	/^google_links = []$/;"	kind:variable	line:10
+gzip	../location_spider.py	/^import gzip$/;"	kind:namespace	line:2
+hashlib	../master.py	/^import hashlib$/;"	kind:namespace	line:1
+hashlib	../mongo_mgr.py	/^import hashlib$/;"	kind:namespace	line:3
+hb_client	../location_spider.py	/^hb_client = HeartBeatClient()$/;"	kind:variable	line:104
+hb_period	../client_crawler.py	/^hb_period = 5$/;"	kind:variable	line:208
+hb_period	../heartbeat_client.py	/^    hb_period = 5$/;"	kind:variable	line:15
+headers	../location_spider.py	/^headers = {$/;"	kind:variable	line:50
+heartbeat	../client_crawler.py	/^def heartbeat():$/;"	kind:function	line:128
+heartbeat	../heartbeat_client.py	/^    def heartbeat(self):$/;"	kind:member	line:42
+heartbeat_client.py	../heartbeat_client.py	1;"	kind:file	line:1
+html	../domains.py	/^html = f.read()$/;"	kind:variable	line:5
+httplib	../client_crawler.py	/^import httplib$/;"	kind:namespace	line:2
+httplib	../mongo_mgr.py	/^import httplib$/;"	kind:namespace	line:2
+is_root_page	../client_crawler.py	/^        is_root_page = False$/;"	kind:variable	line:241
+is_root_page	../client_crawler.py	/^is_root_page = True$/;"	kind:variable	line:194
+json	../client_crawler.py	/^import json$/;"	kind:namespace	line:17
+json	../heartbeat_client.py	/^import json$/;"	kind:namespace	line:6
+json	../master.py	/^import json$/;"	kind:namespace	line:5
+last_rereoder_time	../master.py	/^	last_rereoder_time = time.time()$/;"	kind:variable	line:25
+link_str	../domains.py	/^    link_str = external_link.attrib['href']$/;"	kind:variable	line:15
+location_dir_name	../location_spider.py	/^location_dir_name = 'location_source\/'$/;"	kind:variable	line:48
+location_file_name	../location_spider.py	/^location_file_name = 'location_en_count.txt'$/;"	kind:variable	line:46
+location_spider.py	../location_spider.py	1;"	kind:file	line:1
+locations	../location_spider.py	/^    locations = hb_client.get_target_items(pc.LOCATIONS)$/;"	kind:variable	line:114
+master.py	../master.py	1;"	kind:file	line:1
+max_num_thread	../client_crawler.py	/^max_num_thread = 5$/;"	kind:variable	line:186
+max_threads	../location_spider.py	/^max_threads = 3$/;"	kind:variable	line:69
+mongo_mgr	../master.py	/^	mongo_mgr = MongoManager()$/;"	kind:variable	line:27
+mongo_mgr.py	../mongo_mgr.py	1;"	kind:file	line:1
+msg_received	../socket_server.py	/^def msg_received(data):$/;"	kind:function	line:67
+mysql	../mongo_mgr.py	/^import mysql.connector$/;"	kind:namespace	line:1
+on_message	../master.py	/^	def on_message(self, msg):$/;"	kind:member	line:33
+parser	../client_crawler.py	/^parser = argparse.ArgumentParser(prog='CrawlerClient', description='Start a crawler client')$/;"	kind:variable	line:21
+pc	../client_crawler.py	/^import protocol_constants as pc$/;"	kind:namespace	line:16
+pc	../heartbeat_client.py	/^import protocol_constants as pc$/;"	kind:namespace	line:5
+pc	../location_spider.py	/^import protocol_constants as pc$/;"	kind:namespace	line:5
+pc	../master.py	/^import protocol_constants as pc$/;"	kind:namespace	line:4
+periodical_check	../master.py	/^	def periodical_check(self):$/;"	kind:member	line:90
+protocol_constants.py	../protocol_constants.py	1;"	kind:file	line:1
+re	../domains.py	/^import re$/;"	kind:namespace	line:1
+redis	../mongo_mgr.py	/^import redis$/;"	kind:namespace	line:8
+register_request	../client_crawler.py	/^register_request = {}$/;"	kind:variable	line:204
+request_headers	../client_crawler.py	/^request_headers = {$/;"	kind:variable	line:58
+run_heartbeat	../client_crawler.py	/^        run_heartbeat = False$/;"	kind:variable	line:226
+run_heartbeat	../client_crawler.py	/^run_heartbeat = True$/;"	kind:variable	line:209
+run_heartbeat	../heartbeat_client.py	/^    run_heartbeat = False$/;"	kind:variable	line:13
+send	../socket_client.py	/^    def send(self, message):$/;"	kind:member	line:25
+server_status	../client_crawler.py	/^server_status = pc.STATUS_RUNNING$/;"	kind:variable	line:210
+server_status	../heartbeat_client.py	/^    server_status = pc.STATUS_RUNNING$/;"	kind:variable	line:12
+server_status	../master.py	/^	server_status = pc.STATUS_RUNNING$/;"	kind:variable	line:23
+shutdown_request	../client_crawler.py	/^shutdown_request = {}$/;"	kind:variable	line:262
+signal	../master.py	/^import signal$/;"	kind:namespace	line:11
+signal	../socket_server.py	/^import signal$/;"	kind:namespace	line:5
+socket	../client_crawler.py	/^import socket$/;"	kind:namespace	line:11
+socket	../heartbeat_client.py	/^import socket$/;"	kind:namespace	line:1
+socket	../socket_client.py	/^import socket$/;"	kind:namespace	line:1
+socket	../socket_server.py	/^import socket$/;"	kind:namespace	line:1
+socket_client	../client_crawler.py	/^socket_client = SocketClient('localhost', 20100)$/;"	kind:variable	line:202
+socket_client	../heartbeat_client.py	/^    socket_client = SocketClient()$/;"	kind:variable	line:16
+socket_client.py	../socket_client.py	1;"	kind:file	line:1
+socket_server.py	../socket_server.py	1;"	kind:file	line:1
+start	../heartbeat_client.py	/^    def start(self):$/;"	kind:member	line:33
+start	../socket_server.py	/^    def start(self):$/;"	kind:member	line:60
+start_time	../client_crawler.py	/^start_time = time.time()$/;"	kind:variable	line:193
+startlistening	../socket_server.py	/^    def startlistening(self):$/;"	kind:member	line:30
+sys	../master.py	/^import sys$/;"	kind:namespace	line:12
+sys	../socket_client.py	/^import sys$/;"	kind:namespace	line:2
+sys	../socket_server.py	/^import sys$/;"	kind:namespace	line:2
+t	../client_crawler.py	/^                t = threading.Thread(target=get_page_content, name=None, args=(curtask['url'], curtask['index'], curtask['depth']))$/;"	kind:variable	line:252
+t	../client_crawler.py	/^    t = threading.Thread(target=heartbeat, name=None)$/;"	kind:variable	line:214
+t	../location_spider.py	/^            t = threading.Thread(target=get_google_search_result, name=None, args=(key_word,))$/;"	kind:variable	line:129
+thread	../client_crawler.py	/^import thread$/;"	kind:namespace	line:6
+threading	../client_crawler.py	/^import threading$/;"	kind:namespace	line:7
+threading	../heartbeat_client.py	/^import threading$/;"	kind:namespace	line:2
+threading	../location_spider.py	/^import threading$/;"	kind:namespace	line:3
+threads	../client_crawler.py	/^threads = []$/;"	kind:variable	line:195
+threads	../location_spider.py	/^threads = []$/;"	kind:variable	line:68
+time	../client_crawler.py	/^import time$/;"	kind:namespace	line:8
+time	../heartbeat_client.py	/^import time$/;"	kind:namespace	line:3
+time	../location_spider.py	/^import time$/;"	kind:namespace	line:7
+time	../master.py	/^import time$/;"	kind:namespace	line:6
+time	../mongo_mgr.py	/^import time $/;"	kind:namespace	line:4
+timedelta	../mongo_mgr.py	/^from datetime import timedelta$/;"	kind:namespace	line:6
+tree	../domains.py	/^tree = etree.HTML(html)$/;"	kind:variable	line:8
+urlencode	../location_spider.py	/^from urllib import urlencode$/;"	kind:namespace	line:9
+urllib2	../client_crawler.py	/^import urllib2$/;"	kind:namespace	line:1
+urllib2	../location_spider.py	/^import urllib2$/;"	kind:namespace	line:8
