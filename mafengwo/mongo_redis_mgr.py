@@ -11,15 +11,15 @@ from pymongo import IndexModel, ASCENDING, DESCENDING
 
 class MongoRedisUrlManager:
 
-    def __init__(self, sever_ip='localhost', client=None, expires=timedelta(days=30)):
+    def __init__(self, server_ip='localhost', client=None, expires=timedelta(days=30)):
         """
         client: mongo database client
         expires: timedelta of amount of time before a cache entry is considered expired
         """
         # if a client object is not passed 
         # then try connecting to mongodb at the default localhost port 
-        self.client = MongoClient(sever_ip, 27017) if client is None else client
-        self.redis_client = redis.StrictRedis(host=sever_ip, port=6379, db=0) 
+        self.client = MongoClient(server_ip, 27017) if client is None else client
+        self.redis_client = redis.StrictRedis(host=server_ip, port=6379, db=0) 
         #create collection to store cached webpages,
         # which is the equivalent of a table in a relational database
         self.db = self.client.spider
@@ -55,8 +55,19 @@ class MongoRedisUrlManager:
 
     def finishUrl(self, url):
         record = {'status': 'done', 'done_time': datetime.utcnow()}
-        self.db.mfw.update({'_id': hashlib.md5(url).hexdigest()}, {'$set': record}, upsert=False)
+        self.db.mfw.update({'_id': hashlib.md5(url.encode('utf8')).hexdigest()}, {'$set': record}, upsert=False)
 
     def clear(self):
         self.redis_client.flushall()
         self.db.mfw.drop()
+
+    
+    def set_url_links(self, url, links):
+        try:
+            self.db.urlpr.insert({
+                '_id': hashlib.md5(url.encode('utf8')).hexdigest(), 
+                'url': url, 
+                'links': links
+            })
+        except Exception as err:
+            pass

@@ -5,6 +5,10 @@ from mongo_redis_mgr import MongoRedisUrlManager
 import argparse
 import socket
 
+import urllib3
+
+import os
+
 # from hdfs import *
 # from hdfs.util import HdfsError
 from socket_client import SocketClient
@@ -62,11 +66,13 @@ request_headers = {
 
 dir_name = 'mfw/'
 
-def get_page_content(cur_url, index, depth):
+if os.path.exists(dir_name) is False:
+    os.mkdir(dir_name)
+
+def get_page_content(cur_url, depth):
     print( "downloading %s at level %d" % (cur_url, depth))
-    links = {}
+    links = []
     try:
-            
         http = urllib3.PoolManager()
         r = http.request('GET', cur_url, headers = request_headers)
         filename = cur_url[7:].replace('/', '_')
@@ -77,14 +83,13 @@ def get_page_content(cur_url, index, depth):
         fo.close()
         dbmanager.finishUrl(cur_url)
     except IOError as err:
-        print( err )
-        return
+        print( "get_page_content()", err )
+        raise
     except Exception as err :
-        print( err )
-        return
-    # print( 'add ' + hashlib.md5(cur_url).hexdigest() + ' to list')
+        print( "get_page_content()", err )
+        raise
 
-    html = etree.HTML(html_page.lower().decode('utf-8'))
+    html = etree.HTML(r.data.lower().decode('utf-8'))
     hrefs = html.xpath(u"//a")
 
     for href in hrefs:
@@ -101,7 +106,7 @@ def get_page_content(cur_url, index, depth):
                 if val[-1] == '/':
                     val = val[0:-1]
                 links.append(val)
-                dbmanager.enqueuUrl(val, 'new', depth+1)
+                dbmanager.enqueueUrl(val, 'new', depth+1)
         except ValueError:
             continue
 
@@ -126,7 +131,7 @@ def heartbeat():
             if hb_response_data is None:
                 continue
             
-            # print( 'Heart Beat response' + json.dumps(hb_response_data))
+            # print( 'Heart Beat response', json.dumps(hb_response_data))
             response = json.loads(hb_response_data)
 
             err = response.get(pc.ERROR)
@@ -161,15 +166,16 @@ def heartbeat():
                 server_status = response[pc.SERVER_STATUS]
 
         except socket.error as msg:
-            print (msg)
+            print ("heartbeat error: ", msg)
             server_status = pc.STATUS_CONNECTION_LOST
-
+            raise
 
 # thread pool size
 max_num_thread = 5
 
 # db manager
 dbmanager = MongoRedisUrlManager()
+dbmanager.clear()
 
 dbmanager.enqueueUrl('http://www.mafengwo.cn', 'new', 0 )
 
@@ -198,8 +204,9 @@ try:
     # set daemon so main thread can exit when receives ctrl-c
     t.setDaemon(True)
     t.start()
-except Exception:
-    print( "Error: unable to start thread")
+except Exception as err:
+    print( "Error: unable to start thread", err)
+    raise
 
 while True:
     if server_status == pc.STATUS_PAUSED:
@@ -211,11 +218,13 @@ while True:
             t.join()
         break
     curtask = dbmanager.dequeueUrl()
-    print( 'cur task is: ' + json.dumps(curtask))
+    
     # Go on next level, before that, needs to wait all current level crawling done
     if curtask is None:
         time.sleep(hb_period)
         continue
+    else:
+        print( 'current task is: ', curtask['url'], "at depth: ", curtask['depth'])
 
     # looking for an empty thread from pool to crawl
 
@@ -232,15 +241,16 @@ while True:
                 time.sleep(CRAWL_DELAY)
                 continue
             try:
-                t = threading.Thread(target=get_page_content, name=None, args=(curtask['url'], curtask['index'], curtask['depth']))
+                t = threading.Thread(target=get_page_content, name=None, args=(curtask['url'], curtask['depth']))
                 threads.append(t)
                 # set daemon so main thread can exit when receives ctrl-c
                 t.setDaemon(True)
                 t.start()
                 time.sleep(CRAWL_DELAY)
                 break
-            except Exception:
-                print( "Error: unable to start thread")
+            except Exception as err:
+                print( "Error: unable to start thread", err)
+                raise
 
 shutdown_request = {}
 shutdown_request[pc.MSG_TYPE] = pc.SHUTDOWN
