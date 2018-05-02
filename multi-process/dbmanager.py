@@ -104,7 +104,7 @@ class CrawlDatabaseManager:
             # commit this transaction, please refer to "mysql transaction" for more info
             con.commit()
         except mysql.connector.Error as err:
-            print( 'enqueueUrl() ' + err.msg)
+            # print( 'enqueueUrl() ' + err.msg)
             return
         finally:
             cursor.close()

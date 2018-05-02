@@ -10,6 +10,8 @@ from dbmanager import CrawlDatabaseManager
 from mysql.connector import errorcode
 import mysql.connector
 
+import os
+
 request_headers = {
     'host': "www.mafengwo.cn",
     'connection': "keep-alive",
@@ -72,6 +74,9 @@ dbmanager = CrawlDatabaseManager(max_num_thread)
 # dir for saving HTML files
 dir_name = 'dir_process/'
 
+if os.path.exists(dir_name) is False:
+    os.mkdir(dir_name)
+
 # put first page into queue
 dbmanager.enqueueUrl("http://www.mafengwo.cn", 0)
 start_time = time.time()
@@ -116,5 +121,6 @@ while True:
                 t.start()
                 time.sleep(CRAWL_DELAY)
                 break
-            except Exception:
-                print( "Error: unable to start thread")
+            except Exception as err :
+                print( "Error: unable to start thread", err )
+                raise
