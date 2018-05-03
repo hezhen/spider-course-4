@@ -186,7 +186,11 @@ def crawl():
             for t in threads:
                 t.join()
             break
-        curtask = dbmanager.dequeueUrl()
+        try:
+            curtask = dbmanager.dequeueUrl()
+        except Exception:
+            time.sleep(hb_period)
+            continue
         
         # Go on next level, before that, needs to wait all current level crawling done
         if curtask is None:

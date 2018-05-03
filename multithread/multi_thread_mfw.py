@@ -170,7 +170,8 @@ while True:
                 t.start()
                 time.sleep(CRAWL_DELAY)
                 break
-            except Exception:
-                print( "Error: unable to start thread")
+            except Exception as err:
+                print( "Error: unable to start thread", err)
+                raise
 
 print( '%d pages downloaded, time cost %0.2f seconds' % (num_downloaded_pages, time.time()-start_time))
