@@ -11,10 +11,10 @@ from mongo_mgr import MongoManager
 import signal
 import sys
 
-
 constants = {
 	'reorder_period': 1200, # 20 mins
 	'connection_lost_period': 30, # 30s
+	'status_check_intervel': 5, # 5 sec
 }
 
 class CrawlMaster:
@@ -87,22 +87,50 @@ class CrawlMaster:
 			i += 1
 		return str(i)
 
+
+	def reorder_queue(self):
+		g = nx.DiGraph()
+		cursor = self.db.urlpr.find()
+		for site in cursor:
+			url = site['url']
+			links = site['links']
+			for link in links:
+				g.add_edge(url, link)
+		pageranks = nx.pagerank(g, 0.9)
+		for url, pr in pageranks.iteritems():
+			print( 'updating %s pr: %f' % (url, pr))
+			record = {'pr': pr}
+			self.db.mfw.update_one({'_id': hashlib.md5(url).hexdigest()}, {'$set': record}, upsert=False)
+
+
 	def periodical_check(self):
-		clients_status_ok = True
+		while True:
+			clients_status_ok = True
 
-		for cid, state in self.clients.items():
-			# no heart beat for 2 mins, remove it
-			if time.time() - state['time'] > constants['connection_lost_period']:
-				# remove it from client list 
-				# del client[cid]
-				# set client status to be CONNECTION_LIST
-				self.clients[cid]['status'] = pc.STATUS_CONNECTION_LOST
-				continue
+			if self.is_reordering is False and time.time() - self.last_rereoder_time > constants['reorder_period']:
+				self.server_status = pc.STATUS_PAUSED
+				self.is_reordering = True
+			
+			for cid, state in self.clients.iteritems():
+				# no heart beat for 2 mins, remove it
+				if time.time() - state['time'] > constants['connection_lost_period']:
+					# remove it from client list 
+					# del client[cid]
+					# set client status to be CONNECTION_LIST
+					self.clients[cid]['status'] = pc.STATUS_CONNECTION_LOST
+					continue
 
-			if state['status'] != self.server_status:
-				clients_status_ok = False
-				break
+				if state['status'] != self.server_status:
+					clients_status_ok = False
+					break
 
+			if clients_status_ok and self.server_status == pc.STATUS_PAUSED and self.is_reordering:
+				self.reorder_queue()
+				self.last_rereoder_time = time.time()
+				is_reordering = False
+				self.server_status = pc.STATUS_RUNNING
+
+			time.sleep(constants['status_check_intervel'])
 
 def exit_signal_handler(signal, frame):
 	crawl_master.server.close()
