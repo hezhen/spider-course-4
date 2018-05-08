@@ -22,14 +22,12 @@ class FeedsMongoManager:
             return None
 
     def insert_feed(self, feed, time):
-        print('insert feed')
         try:
             self.db.weibo.insert({'uid':feed['mblog']['user']['id'],
                                   'itemid':feed['itemid'],
                                   'scheme':feed['scheme'],
                                   'created_at':feed['mblog']['created_at'],
                                   'feed': feed})
-            print('insert is done')
         except Exception as err:
             print('insert_feed', err)
             pass

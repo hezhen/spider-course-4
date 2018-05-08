@@ -113,9 +113,6 @@ class FeedsCrawler:
             while page < MAX_PAGE:
                 feeds_str = self.get_feeds(uid, page)
                 page += 1
-                f = open('feeds.txt', 'w+')
-                f.write(feeds_str.text)
-                f.close()
                 feeds = json.loads(feeds_str.text)
                 for feed in feeds['data']['cards']:
                     print('running')

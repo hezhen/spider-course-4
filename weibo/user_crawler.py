@@ -22,11 +22,11 @@ class UsersCrawler:
         'connection': "keep-alive",
         'cache-control': "no-cache",
         'upgrade-insecure-requests': "1",
-        'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1 Safari/605.1.15",
+        'user-agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
         'accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
         'accept-encoding': "gzip, deflate, sdch, br",
         'accept-language': "zh-CN,en-US;q=0.8,en;q=0.6",
-        'Cookie': 'SUB=_2A2533pSEDeRhGeBP7FoW9SvEwjiIHXVVIDzMrDV6PUJbkdAKLUvukW1NRSUhSB1dD7AIeLf4smfqbCKFvILCjiSz; SUHB=03o1B1VamvmZEj; _T_WM=173d13c1c3dbed1a2391ba0453fc3160; SCF=AuGj08St8RzhZXXgaRZbwjaLR00o4RbjETtDYFhR9ua_RqIuk7CPW0WDsMeHFX2Z6RsswDupzaD6AzUJb78qB0M.',
+        'cookie': "SCF=AlTf48qNezF12LbNvCHGGee_Nymdun-Sp9kGATl9gjhJAPPkj2QBT2-Y2MECfIjqy1QjvcBbdVr9HWi6hgbgnTQ.; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WhEEfKT6-E_qQ8I2HTu2.Vu5JpX5o2p5NHD95Qp1hq4She41K-pWs4DqcjGC2Hkg.y8Kntt; SUB=_2A250CvjnDeRhGeBP7FoW9SvEwjiIHXVX9JivrDV6PUJbkdANLUvGkW1966OJJxi88Ah66us23Spcr23Dpw..; SUHB=0cSXjt5Dqq_ieZ; _T_WM=e0f6480701da87741a5b948440f9d665; SSOLoginState=1495508844; ALF=1498100844; H5_INDEX=0_all; H5_INDEX_TITLE=%E4%BD%A0%E5%B7%B2%E7%BB%8F%E8%A2%AB%E7%A7%BB%E9%99%A4%E7%BE%A4%E8%81%8A; M_WEIBOCN_PARAMS=featurecode%3D20000320%26oid%3D4110491498745329%26luicode%3D10000011%26lfid%3D231051_-_followers_-_5979396421",
         'postman-token': "0b85ea3b-073b-a799-4593-61095e4ed01a"
     }
 
@@ -68,21 +68,28 @@ class UsersCrawler:
             else:
                 uid = self.get_uid()
             user_str = self.get_users(uid, 1)
+
             users = json.loads(user_str)
-            for user in users['cards'][1]['card_group']:
-                name = user['user']['screen_name']
-                user_id = user['user']['id']
-                followers_count = user['user']['followers_count']
-                follow_count = user['user']['follow_count']
-                description = user['user']['description']
+
+            f = open('users.txt', 'w+')
+            f.write(user_str)
+            f.close()
+
+            if len(users['data']['cards']) == 1:
+                continue
+            
+            for user in users['data']['cards'][1]['card_group'][1]['users']:
+                name = user['screen_name']
+                user_id = user['id']
+                followers_count = user['followers_count']
+                follow_count = user['follow_count']
+                description = user['description']
                 self.db_manager.enqueue_user(user_id,
                                              name=name,
                                              follow_count=follow_count,
                                              followers_count=followers_count,
                                              description=description)
             time.sleep(CRAWL_DELAY)
-            print(users)
-            break
 
 if __name__ == '__main__':
     user_crawler = UsersCrawler()

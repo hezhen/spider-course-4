@@ -101,7 +101,6 @@ class CrawlDatabaseManager:
     # insert user into queue
     def enqueue_user(self, user_id, **kwargs):
         con = self.cnxpool.get_connection()
-        print ('get connection')
         cursor = con.cursor()
         try:
             add_uid = ("INSERT INTO uids (user_id) VALUES (%s)")
