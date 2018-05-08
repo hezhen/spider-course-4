@@ -25,16 +25,16 @@ class MongoManager:
 
         # create index if db is empty
         if self.db.locations.count() is 0:
-            self.db.locations.create_index([("status", ASCENDING)])
+            self.db.mfw.create_index([("status", ASCENDING)])
 
     def dequeueItems(self, size):
-        records = self.db.find({'status':'new'}).batch(50)
+        records = self.db.mfw.find({'status':'new'}).batch_size(50)
 
         ids = []
         for record in records:
             ids.append(record['_id'])
         
-        db.locations.update(
+        self.db.mfw.update(
             {
                 '_id': { '$in': ids }
             },
@@ -49,7 +49,7 @@ class MongoManager:
             return None
 
     def finishItems(self, ids):
-        db.locations.update(
+        self.db.mfw.update(
             {
                 '_id': { '$in': ids }
             },
@@ -59,4 +59,8 @@ class MongoManager:
         )
 
     def clear(self):
-        self.db.locations.drop()
+        self.db.mfw.drop()
+
+if __name__ == '__main__':
+    mongo_mgr = MongoManager()
+    records = mongo_mgr.dequeueItems(5)
