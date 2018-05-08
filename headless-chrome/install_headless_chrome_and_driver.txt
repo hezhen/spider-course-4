@@ -1,0 +1,24 @@
+First download chrome driver
+
+https://sites.google.com/a/chromium.org/chromedriver/downloads
+
+last test download version:
+https://chromedriver.storage.googleapis.com/index.html?path=2.38/
+
+unzip then get chromedriver
+
+put it to any directory in system PATH (e.x: /usr/local/bin/ )
+
+Headless Chrome ( Chrome v59 ):
+
+Windows 64 位版：https://dl.lancdn.com/landian/software/chrome/m/index/Win64.html
+
+Windows 32 位版：https://dl.lancdn.com/landian/software/chrome/m/index/Win32.html
+
+Debian/Ubuntu：https://dl.lancdn.com/landian/software/chrome/m/index/Deb.html
+
+Fedora/openSUSE：https://dl.lancdn.com/landian/software/chrome/index/Rpm.html
+
+Mac OS X 10.9+版：https://dl.lancdn.com/landian/software/chrome/m/index/Mac.html
+
+
