@@ -5,6 +5,10 @@ https://sites.google.com/a/chromium.org/chromedriver/downloads
 last test download version:
 https://chromedriver.storage.googleapis.com/index.html?path=2.38/
 
+From Baidu Pan:
+https://pan.baidu.com/s/1OTANr3Jy6g0bnbaxcuQqsw
+Including driver for MacOS, Windows 64 and Linux
+
 unzip then get chromedriver
 
 put it to any directory in system PATH (e.x: /usr/local/bin/ )
