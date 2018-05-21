@@ -129,7 +129,7 @@ async def report_url(request):
     resp = StreamResponse()
     data = await request.json()
     url = data['url']
-    # print("url reported: " + url)
+    print("url reported: " + url)
     biz = re.findall('__biz=(.*?)\&', url)
     if len(biz) == 0:
         await resp.prepare(request)

@@ -46,7 +46,7 @@ function postData(post_data, path, cb) {
 }
 
 module.exports = {
-    summary: 'a rule to modify response',
+    summary: 'rule to monitor wechat communication',
     * beforeSendResponse(requestDetail, responseDetail) {
 
         if (/mp\/profile_ext\?action=home/i.test(requestDetail.url)) {
