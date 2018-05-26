@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import urllib
-import urllib2
+import urllib3
 import glob
 import sqlite3
 import os
-import cookielib
+
 
 
 url="http://192.168.1.27/xiaoxiang/login.php"
+url_success = "http://192.168.1.27/xiaoxiang/main.php"
 
 headers = {
     'host': "192.168.1.27",
@@ -24,14 +25,11 @@ headers = {
 
 if __name__ == '__main__':
     data = {'name':'caca', "password":'c'}
-    payload = urllib.urlencode(data)
 
-    # use cookiejar
-    cj = cookielib.CookieJar()
-    opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-    request = urllib2.Request(url, payload, headers=headers)
-    response = opener.open(request)
-    print( response.info())
-    print( response.read())
-    for cookie in cj:
-        print( cookie.name, cookie.value, cookie.domain)
+    http = urllib3.PoolManager()
+    r = http.request('POST', url, fields= data, headers = headers, redirect = False)
+    headers['cookie'] = r.getheader('set-cookie')
+    # r = http.request('GET', url, headers = headers)
+    
+    r = http.request('GET', url_success, headers = headers, redirect = False)
+    print(r.data)
