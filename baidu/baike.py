@@ -15,6 +15,6 @@ url = quote(url,safe=string.printable)
 
 http = urllib3.PoolManager()
 r = http.request('GET', url)
-f = open( item_name + '.html', 'wb+')
+f = open( item_name + '.baike.html', 'wb+')
 f.write(r.data)
 f.close()

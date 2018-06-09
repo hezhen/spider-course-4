@@ -29,3 +29,5 @@ r = http.request('GET', url, headers=headers)
 f = open( item_name + '.baidu.html', 'wb+')
 f.write(r.data)
 f.close()
+
+baidu_cache_urls = re.findall('http\:\/\/cache\.baiducontent\.com[^"]+', r.data)
