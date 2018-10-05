@@ -175,7 +175,7 @@ def crawl():
     # thread pool size
     max_num_thread = 5
     CRAWL_DELAY = 2
-    global dbmanager, is_root_page, threads, hb_period = 
+    global dbmanager, is_root_page, threads, hb_period 
 
     while True:
         if server_status == pc.STATUS_PAUSED:
